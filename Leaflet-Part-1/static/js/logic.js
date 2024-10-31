@@ -19,12 +19,12 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
     }
     // Creating the function to determine marker color based on depth
     function getColor(depth) {
-        return depth > 90 ? '#FF0000' :
-               depth > 70 ? '#FF7F00' :
-               depth > 50 ? '#FFF0F0' :
-               depth > 30 ? '#7FFF00' :
-               depth > 10 ? '#00FF00' :
-                            '#00FFFF' ;
+        return depth > 90 ? '#FF0000' :  //red
+               depth > 70 ? '#FF7F00' :  //orange
+               depth > 50 ? '#FFFF00' :  //yellow
+               depth > 30 ? '#ADFF2F' :  //yellowish
+               depth > 10 ? '#7FFF00' :  //greenish
+                            '#00FF00' ;  //green
     }
 //creating a GeoJason layer
     L.geoJson(data, {
@@ -50,17 +50,17 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
         const div = L.DomUtil.create('div', 'info legend');
         const depths = [-10, 10, 30, 50, 70, 90];
         const labels = [];
+        const colors = ['#00FF00', '#7FFF00', '#ADFF2F', '#FFFF00', '#FF7F00', '#FF0000'];
+
+        div.innerHTML += "<h4>Depth (km)</h4>";
 
         for (let i = 0; i < depths.length; i++) {
             div.innerHTML +=
-                '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
+            `<i style="background:${colors[i]}; width: 18px; height: 18px; display: inline-block; margin-right: 8px;"></i> ` +
                 depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
         }
         return div;
     };
 
     legend.addTo(myMap);
-})
-.catch(error => {
-    console.error("Error loading GeoJSON data:", error);
 });
